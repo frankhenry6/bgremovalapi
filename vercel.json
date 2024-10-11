@@ -5,8 +5,7 @@
         "src": "server.js",
         "use": "@vercel/node",
         "config": {
-          "includeFiles": "node_modules/@imgly/background-removal-node/dist/**",
-          "maxDuration": 60
+          "includeFiles": "node_modules/@imgly/background-removal-node/dist/**"
         }
       }
     ],
