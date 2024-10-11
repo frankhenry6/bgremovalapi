@@ -6,22 +6,15 @@ const path = require('path');
 
 const app = express();
 
-// Set the RESOURCE_PATH to the correct location for the resources.json file
-process.env.RESOURCE_PATH = path.join(__dirname, 'node_modules/@imgly/background-removal-node/dist/resources.json');
-
-// Use the /tmp directory for uploads in serverless environments like Vercel
+// Use the /tmp directory for uploads in serverless environments
 const upload = multer({ dest: '/tmp/uploads/' });
 
 async function removeImageBackground(imgPath) {
-    try {
-        console.time("Background Removal"); // Start timing
-        const blob = await removeBackground(imgPath);
-        const buffer = Buffer.from(await blob.arrayBuffer());
-        console.timeEnd("Background Removal"); // End timing
-        return buffer;
-    } catch (error) {
-        throw new Error('Error removing background: ' + error.message);
-    }
+    console.log("Starting background removal...");
+    const blob = await removeBackground(imgPath);
+    const buffer = Buffer.from(await blob.arrayBuffer());
+    console.log("Background removal complete.");
+    return buffer;
 }
 
 app.post('/remove-background', upload.single('image'), async (req, res) => {
@@ -30,10 +23,10 @@ app.post('/remove-background', upload.single('image'), async (req, res) => {
     }
 
     try {
-        console.log("Image received, starting background removal...");
+        console.log("Image received, starting processing...");
         const resultBuffer = await removeImageBackground(req.file.path);
         
-        // Clean up the uploaded file from the /tmp directory
+        // Clean up the uploaded file
         fs.unlinkSync(req.file.path);
 
         // Set the appropriate headers
