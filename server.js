@@ -5,7 +5,9 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const upload = multer({ dest: 'uploads/' });
+
+// Use the /tmp directory for uploads in serverless environments like Vercel
+const upload = multer({ dest: '/tmp/uploads/' });
 
 async function removeImageBackground(imgPath) {
     try {
@@ -25,7 +27,7 @@ app.post('/remove-background', upload.single('image'), async (req, res) => {
     try {
         const resultBuffer = await removeImageBackground(req.file.path);
         
-        // Clean up the uploaded file
+        // Clean up the uploaded file from the /tmp directory
         fs.unlinkSync(req.file.path);
 
         // Set the appropriate headers
