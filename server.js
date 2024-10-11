@@ -6,6 +6,9 @@ const path = require('path');
 
 const app = express();
 
+// Set the RESOURCE_PATH to the correct location for the resources.json file
+process.env.RESOURCE_PATH = path.join(__dirname, 'node_modules/@imgly/background-removal-node/dist/resources.json');
+
 // Use the /tmp directory for uploads in serverless environments like Vercel
 const upload = multer({ dest: '/tmp/uploads/' });
 
