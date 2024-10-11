@@ -6,7 +6,7 @@
         "use": "@vercel/node",
         "config": {
           "includeFiles": "node_modules/@imgly/background-removal-node/dist/**",
-          "maxDuration": 500
+          "maxDuration": 60
         }
       }
     ],

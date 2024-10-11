@@ -14,8 +14,10 @@ const upload = multer({ dest: '/tmp/uploads/' });
 
 async function removeImageBackground(imgPath) {
     try {
+        console.time("Background Removal"); // Start timing
         const blob = await removeBackground(imgPath);
         const buffer = Buffer.from(await blob.arrayBuffer());
+        console.timeEnd("Background Removal"); // End timing
         return buffer;
     } catch (error) {
         throw new Error('Error removing background: ' + error.message);
@@ -28,6 +30,7 @@ app.post('/remove-background', upload.single('image'), async (req, res) => {
     }
 
     try {
+        console.log("Image received, starting background removal...");
         const resultBuffer = await removeImageBackground(req.file.path);
         
         // Clean up the uploaded file from the /tmp directory
